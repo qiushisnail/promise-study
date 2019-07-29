@@ -1,8 +1,8 @@
 class Transaction {
-  perform(anyMethod, wrapper) {
-    wrapper.initialize()
+  perform(anyMethod, wrappers) {
+    wrappers.forEach(w => w.initialize())
     anyMethod();
-    wrapper.close();
+    wrappers.forEach(w => w.close())
   }
 }
 
@@ -12,11 +12,18 @@ let oldFun = () => {
   console.log("原有的逻辑...")
 }
 
-transaction.perform(oldFun, {
+transaction.perform(oldFun, [{
   initialize() {
-    console.log("初始化")
+    console.log("初始化1")
   },
   close() {
-    console.log("关闭")
+    console.log("关闭1")
   }
-})
+}, {
+  initialize() {
+    console.log("初始化2")
+  },
+  close() {
+    console.log("关闭2")
+  }
+}])
